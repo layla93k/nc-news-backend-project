@@ -216,4 +216,45 @@ describe('POST /api/articles/:article_id/comments', () => {
         expect(body.msg).toBe('bad request')
     })
 })
+
+it('POST: returns 400 status code if invalid article_id given', ()=>{
+    const newComment = {
+        username: 'butter_bridge',
+            body: 'Testing my post endpoint.'
+    }
+return request(app)
+.post('/api/articles/not-an-id/comments')
+.send(newComment)
+.expect(400)
+.then(({body})=>{
+    expect(body.msg).toBe('bad request')
+})
+})
+
+it('POST: returns 404 status code if tries to post to an article_id that does not exist', ()=>{
+    const newComment = {
+        username: 'butter_bridge',
+            body: 'Testing my post endpoint.'
+    }
+return request(app)
+.post('/api/articles/11111/comments')
+.send(newComment)
+.expect(404)
+.then(({body})=>{
+    expect(body.msg).toBe('article_id does not exist')
+})
+})
+it('POST: returns 404 status code if the username does not exist in the database', ()=>{
+    const newComment = {
+        username: 'layla_kawafi',
+            body: 'Testing my post endpoint.'
+    }
+return request(app)
+.post('/api/articles/4/comments')
+.send(newComment)
+.expect(404)
+.then(({body})=>{
+    expect(body.msg).toBe('username not found')
+})
+})
 })
