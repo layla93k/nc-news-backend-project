@@ -25,7 +25,6 @@ exports.fetchArticleById = (article_id) => {
     return rows
   })
     
-}
 
 exports.fetchAllArticles = () => {
     const query = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
@@ -36,4 +35,5 @@ exports.fetchAllArticles = () => {
     return db.query(query).then(({rows})=>{
       return rows
     })
+
 }
