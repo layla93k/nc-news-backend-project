@@ -86,7 +86,7 @@ describe('GET /api/articles/:article_id', () => {
               .get('/api/articles/1111')
               .expect(404)
               .then(({body}) => {
-                expect(body.msg).toBe('article does not exist');
+                expect(body.msg).toBe('article_id does not exist');
               });
           });
           test('GET:400 sends an appropriate status and error message when given an invalid id', () => {
@@ -94,12 +94,10 @@ describe('GET /api/articles/:article_id', () => {
               .get('/api/articles/not-an-id')
               .expect(400)
               .then((response) => {
-                expect(response.body.msg).toBe('Bad request');
+                expect(response.body.msg).toBe('bad request');
               });
     })
 })
-
-
 
 describe('GET /api/articles', () => {
     it('returns a 200 status code and responds with an articles array of article objects', () => {
@@ -157,7 +155,7 @@ describe('GET /api/articles/:article_id', () => {
               .get('/api/articles/1111')
               .expect(404)
               .then(({body}) => {
-                expect(body.msg).toBe('article does not exist');
+                expect(body.msg).toBe('article_id does not exist');
               });
           });
           test('GET:400 sends an appropriate status and error message when given an invalid id', () => {
@@ -165,15 +163,15 @@ describe('GET /api/articles/:article_id', () => {
               .get('/api/articles/not-an-id')
               .expect(400)
               .then((response) => {
-                expect(response.body.msg).toBe('Bad request');
+                expect(response.body.msg).toBe('bad request');
               });
     })
 })
 
-describe.only('POST /api/articles/:article_id/comments', () => {
+describe('POST /api/articles/:article_id/comments', () => {
     it('returns a 201 status code and the comment that is posted at the specific article_id, where the request only accepts a body with a username and body property', () => {
         const newComment = {
-            username: 'layla_kawafi',
+            username: 'butter_bridge',
             body: 'Testing my post endpoint.'
         }
        return request(app)
@@ -184,4 +182,27 @@ describe.only('POST /api/articles/:article_id/comments', () => {
         expect(body).toEqual({ yourNewComment: 'Testing my post endpoint.'})
        })
     })
+    it('POST: returns 400 status code if there is a malformed body, i.e it is missing required fields', ()=>{
+        const newComment = {}
+    return request(app)
+    .post('/api/articles/4/comments')
+    .send(newComment)
+    .expect(400)
+    .then(({body})=>{
+        expect(body.msg).toBe('bad request')
+    })
+    })
+    it('POST: returns 400 status code if there is invalid properties in the body', ()=>{
+        const newComment = {
+            rating: 10,
+            nickname: 'butter'
+        }
+    return request(app)
+    .post('/api/articles/4/comments')
+    .send(newComment)
+    .expect(400)
+    .then(({body})=>{
+        expect(body.msg).toBe('bad request')
+    })
+})
 })

@@ -24,7 +24,7 @@ app.post('/api/articles/:article_id/comments', postNewComment)
 app.use(handleCustomErrors)
 app.use(handleSQLErrors)
 app.all('/*', (req, res, next) => {
-    res.status(400).send({ msg: 'Bad request' })
+    res.status(404).send({ msg: 'Not found' })
 
 })
 
