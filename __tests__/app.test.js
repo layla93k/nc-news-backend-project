@@ -122,7 +122,7 @@ describe('404 not found status code sent when incorrect endpoint', () => {
     })
 })
 
-describe('GET /api/articles/:article_id/comments', () =>{
+describe('GET /api/articles/:article_id/comments', () => {
     it('returns a 200 status code and an array of comments for the given article_id', () => {
         return request(app)
             .get(`/api/articles/3/comments`)
@@ -133,33 +133,56 @@ describe('GET /api/articles/:article_id/comments', () =>{
                 expect(body.comments).toBeSortedBy('created_at', {
                     descending: true,
                 })
-               body.comments.forEach((comment)=>{
-                expect(typeof comment.comment_id).toBe('number')
-                expect(typeof comment.votes).toBe('number')
-                expect(typeof comment.created_at).toBe('string')
-                expect(typeof comment.author).toBe('string')
-                expect(typeof comment.body).toBe('string')
-                expect(typeof comment.article_id).toBe('number')
-               })
-              
+                const desiredObj = {
+                    "comments": [
+                        {
+                            comment_id: 11,
+                            votes: 0,
+                            created_at: '2020-09-19T23:10:00.000Z',
+                            author: 'icellusedkars',
+                            body: 'Ambidextrous marsupial',
+                            article_id: 3
+                        },
+                        {
+                            comment_id: 10,
+                            votes: 0,
+                            created_at: '2020-06-20T07:24:00.000Z',
+                            author: 'icellusedkars',
+                            body: 'git push origin master',
+                            article_id: 3
+                        }
+                    ]
+                }
+                expect(body).toMatchObject(desiredObj)
 
             })
 
+
     })
-    test('GET:404 sends an appropriate status and error message when given a valid but non-existent id', () => {
-        return request(app)
-            .get('/api/articles/1111/comments')
-            .expect(404)
-            .then(({ body }) => {
-                expect(body.msg).toBe('article_id does not exist');
-            });
-    });
-    test('GET:400 sends an appropriate status and error message when given an invalid id', () => {
-        return request(app)
-            .get('/api/articles/not-an-id/comments')
-            .expect(400)
-            .then((response) => {
-                expect(response.body.msg).toBe('Bad request');
-            });
-    })
+
 })
+it('GET: 200 status code and returns an empty array when receives a valid id but no comments', () => {
+    return request(app)
+        .get('/api/articles/13/comments')
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toEqual({ "comments": [] })
+        })
+})
+it('GET:404 sends an appropriate status and error message when given a valid but non-existent id', () => {
+    return request(app)
+        .get('/api/articles/1111/comments')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('article_id does not exist');
+        });
+});
+it('GET:400 sends an appropriate status and error message when given an invalid id', () => {
+    return request(app)
+        .get('/api/articles/not-an-id/comments')
+        .expect(400)
+        .then((response) => {
+            expect(response.body.msg).toBe('Bad request');
+        });
+})
+
