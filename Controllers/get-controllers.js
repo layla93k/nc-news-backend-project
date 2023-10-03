@@ -29,7 +29,7 @@ exports.getArticleById = (req, res, next) => {
 }
 exports.getAllArticles = (req, res, next) => {
     fetchAllArticles().then((articles)=>{
-        console.log(articles)
+       
         res.status(200).send({articles: articles})
     }).catch((err) => {
        next(err)
