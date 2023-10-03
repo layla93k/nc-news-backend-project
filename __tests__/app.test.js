@@ -25,14 +25,8 @@ describe('GET /api/topics', () => {
                 })
             })
     })
-    it('GET:404 sends an appropriate status and error message when given an invalid endpoint', () => {
-        return request(app)
-            .get('/api/not-a-route')
-            .expect(404)
-            .then(({ body }) => {
-                expect(body.msg).toBe('Not found');
-            });
-    })
+
+
 })
 
 describe('GET /api', () => {
@@ -53,16 +47,8 @@ describe('GET /api', () => {
 
             })
     })
-    it('GET:404 sends an appropriate status and error message when given an invalid endpoint', () => {
-        return request(app)
-            .get('/not-a-route')
-            .expect(404)
-            .then(({ body }) => {
-                expect(body.msg).toBe('Not found');
-            });
-    })
-})
 
+})
 
 describe('GET /api/articles/:article_id', () => {
     it('returns a 200 status code and an article object depending on which article id is specified in the endpoint', () => {
@@ -115,38 +101,60 @@ describe('GET /api/articles', () => {
                     expect(typeof article.votes).toBe('number')
                     expect(typeof article.article_img_url).toBe('string')
                     expect(typeof article.comment_count).toBe('string')
-                }) 
+                })
                 expect(body.articles).toBeSortedBy('created_at', {
                     descending: true,
-                    coerce: true,
-                  });
+                });
 
             })
     })
+
+})
+
+describe('404 not found status code sent when incorrect endpoint', () => {
     it('GET:404 sends an appropriate status and error message when given an invalid endpoint', () => {
         return request(app)
             .get('/api/not-a-route')
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe('Not found');
-            });
+            })
     })
 })
 
 describe('GET /api/articles/:article_id', () => {
     it('returns a 200 status code and an article object depending on which article id is specified in the endpoint', () => {
         return request(app)
-            .get(`/api/articles/3`)
+            .get(`/api/articles/3/comments`)
             .expect(200)
             .then(({ body }) => {
                 expect(typeof body).toBe('object')
-                expect(body.article[0].title).toBe("Eight pug gifs that remind me of mitch")
-                expect(body.article[0].article_id).toBe(3)
-                expect(body.article[0].author).toBe("icellusedkars")
-                expect(body.article[0].body).toBe("some gifs")
-                expect(body.article[0].created_at).toBe('2020-11-03T09:12:00.000Z')
-                expect(body.article[0].votes).toBe(0)
-                expect(body.article[0].article_img_url).toBe("https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700")
+                expect(body.comments.length).toBe(2)
+                expect(body.comments).toBeSortedBy('created_at', {
+                    descending: true,
+                })
+                const desiredObj = {
+                    "comments": [
+                        {
+                            comment_id: 11,
+                            votes: 0,
+                            created_at: '2020-09-19T23:10:00.000Z',
+                            author: 'icellusedkars',
+                            body: 'Ambidextrous marsupial',
+                            article_id: 3
+                        },
+                        {
+                            comment_id: 10,
+                            votes: 0,
+                            created_at: '2020-06-20T07:24:00.000Z',
+                            author: 'icellusedkars',
+                            body: 'git push origin master',
+                            article_id: 3
+                        }
+                    ]
+                }
+                expect(body).toMatchObject(desiredObj)
+
             })
            
           })
@@ -165,7 +173,10 @@ describe('GET /api/articles/:article_id', () => {
               .then((response) => {
                 expect(response.body.msg).toBe('bad request');
               });
+
+
     })
+
 })
 
 describe('POST /api/articles/:article_id/comments', () => {
