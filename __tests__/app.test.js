@@ -135,7 +135,7 @@ describe('GET /api/articles', () => {
     })
 })
 
-describe.only('GET /api/articles/:article_id', () => {
+describe('GET /api/articles/:article_id', () => {
     it('returns a 200 status code and an article object depending on which article id is specified in the endpoint', () => {
         return request(app)
             .get(`/api/articles/3`)
@@ -169,3 +169,19 @@ describe.only('GET /api/articles/:article_id', () => {
               });
     })
 })
+
+// xdescribe.only('POST /api/articles/:article_id/comments', () => {
+//     it('returns a 201 status code and the comment that is posted at the specific article_id, where the request only accepts a body with a username and body property', () => {
+//         const newComment = {
+//             username: 'layla_kawafi',
+//             body: 'Testing my post endpoint.'
+//         }
+//        return request(app)
+//        .post('/api/articles/4/comments')
+//        .send(newComment)
+//        .expect(201)
+//        .then(({body}) =>{
+//         expect(body).toEqual({ yourNewComment: 'Testing my post endpoint.'})
+//        })
+//     })
+// })

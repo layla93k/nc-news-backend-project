@@ -1,7 +1,5 @@
 
-const { fetchAllTopics, fetchAllEndpoints, fetchArticleById, fetchAllArticles } = require('../Models/models.js')
-
-
+const { fetchAllTopics, fetchAllEndpoints, fetchArticleById, fetchAllArticles } = require('../Models/get-models.js')
 
 exports.getAllTopics = (req, res, next) => {
     fetchAllTopics().then((topics) => {

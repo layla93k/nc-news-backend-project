@@ -24,6 +24,7 @@ exports.fetchArticleById = (article_id) => {
       }
     return rows
   })
+}
     
 
 exports.fetchAllArticles = () => {
