@@ -11,4 +11,5 @@ exports.handleSQLErrors = ((err, req, res, next) => {
        res.status(400).send({msg: 'Bad request'})
         }
         next(err)
-       });
+      });
+
