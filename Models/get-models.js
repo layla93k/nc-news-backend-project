@@ -20,17 +20,16 @@ exports.fetchArticleById = (article_id) => {
   ])
   .then(({rows})=>{
     if(rows.length === 0) {
-        return Promise.reject({status: 404, msg: 'article does not exist'})
+        return Promise.reject({status: 404, msg: 'article_id does not exist'})
       }
+      
     return rows
   })
 }
-    
 
 exports.fetchAllArticles = () => {
     const query = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
     FROM articles
-    LEFT JOIN comments ON comments.article_id= articles.article_id
     GROUP BY articles.article_id
     ORDER BY articles.created_at DESC;`    
     return db.query(query).then(({rows})=>{
@@ -38,3 +37,35 @@ exports.fetchAllArticles = () => {
     })
 
 }
+
+exports.fetchArticleCommentsById = (article_id) => {
+    const query = `SELECT comments.comment_id, 
+    comments.votes, comments.created_at, comments.author, comments.body, comments.article_id
+    FROM comments
+    WHERE comments.article_id = $1
+    ORDER BY comments.created_at DESC;`
+    
+    const maxArticleQuery = `SELECT MAX(article_id) FROM articles;`
+    
+    return Promise.all([
+      db.query(query, [article_id]),
+      db.query(maxArticleQuery)
+    ]).then(([commentsResult, maxArticleNum]) => {
+
+      const maxArticleId = maxArticleNum.rows[0].max
+
+      if(article_id <= maxArticleId){
+      return commentsResult.rows
+      }
+      return Promise.reject({status: 404, msg: 'article_id does not exist'})
+    })
+  }
+     
+    
+
+    
+        
+        
+      
+    
+  
