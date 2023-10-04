@@ -2,7 +2,12 @@ const express = require("express");
 const data = require('./db/data/test-data/index.js')
 
 const {postNewComment, patchVotes} = require ('./Controllers/post-and-patch-controllers.js')
+
 const { getAllTopics, getAllEndpoints, getArticleById, getAllArticles, getArticleCommentsById, getAllUsers} = require('./Controllers/get-controllers.js')
+
+
+const { getAllTopics, getAllEndpoints, getArticleById, getAllArticles, getArticleCommentsById } = require('./Controllers/get-controllers.js')
+const {deleteComment} = require ('./Controllers/comments-controllers.js')
 
 const { handleCustomErrors, handleSQLErrors } = require('./Error handling/error-handling.js');
 
@@ -17,7 +22,13 @@ app.get('/api/articles', getAllArticles)
 app.get('/api/articles/:article_id/comments', getArticleCommentsById)
 app.get('/api/users', getAllUsers)
 app.post('/api/articles/:article_id/comments', postNewComment)
+
+
+app.delete('/api/comments/:comment_id', deleteComment)
+
+
 app.patch('/api/articles/:article_id', patchVotes)
+
 
 
 app.use(handleCustomErrors)

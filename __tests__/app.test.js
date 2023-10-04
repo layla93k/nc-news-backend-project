@@ -271,6 +271,7 @@ describe('POST /api/articles/:article_id/comments', () => {
 })
 
 
+
 describe('PATCH /api/articles/article_id', () => {
     it('will return a 200 status code and an updated article with the vote count incremented', () => {
         const votePatch = { inc_votes: 20 }
@@ -291,6 +292,54 @@ describe('PATCH /api/articles/article_id', () => {
                 }
                 expect(body).toMatchObject({ updatedArticle: desiredObj })
             })
+
+
+describe('DELETE/api/comments/:comments_id', () => {
+    it('returns a 204 status code and no content', () => {
+        return request(app)
+       .delete('/api/comments/4')
+       .expect(204)
+       .then(({body}) =>{
+        expect(body).toEqual({})
+       })
+    })
+    it('DELETE: returns 404 status code if tries to delete a comment_id that does not exist', ()=>{ 
+    return request(app)
+    .delete('/api/comments/11111')
+    .expect(404)
+    .then(({body})=>{
+        expect(body.msg).toBe('comment_id does not exist')
+    })
+    })
+    it('DELETE: returns 404 status code if tries to delete a comment_id with an invalid comment_id', ()=>{ 
+        return request(app)
+        .delete('/api/comments/not-a-comment-id')
+        .expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe('bad request')
+        })
+})
+  
+describe('PATCH /api/articles/article_id', () =>{
+    it('will return a 200 status code and an updated article with the vote count incremented', ()=>{
+    const votePatch = { inc_votes: 20 }
+    return request(app)
+    .patch('/api/articles/4')
+    .send(votePatch)
+    .expect(200)
+    .then(({body})=>{
+        const desiredObj = {
+            title: "Student SUES Mitch!",
+            topic: "mitch",
+            author: "rogersop",
+            body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
+            created_at: "2020-05-06T01:14:00.000Z",
+            votes: 20,
+            article_img_url:
+              "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+          }
+        expect(body).toMatchObject({updatedArticle: desiredObj})
+
     })
 
 
@@ -340,6 +389,7 @@ describe('PATCH /api/articles/article_id', () => {
 
 
 
+
 describe('GET /api/users', () => {
     it('should return an array of user objects', () => {
         return request(app)
@@ -357,3 +407,6 @@ describe('GET /api/users', () => {
             })
     })
 })
+
+})
+
