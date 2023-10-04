@@ -63,7 +63,12 @@ exports.fetchArticleCommentsById = (article_id) => {
     })
   }
      
+exports.fetchAllUsers = () =>{
+  return db.query(`SELECT * FROM users;`).then(({rows})=>{
     
+   return rows
+  })
+}
 
     
         
