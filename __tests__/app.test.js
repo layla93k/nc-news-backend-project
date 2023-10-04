@@ -271,6 +271,33 @@ return request(app)
 })
 
 
+
+describe('DELETE/api/comments/:comments_id', () => {
+    it('returns a 204 status code and no content', () => {
+        return request(app)
+       .delete('/api/comments/4')
+       .expect(204)
+       .then(({body}) =>{
+        expect(body).toEqual({})
+       })
+    })
+    it('DELETE: returns 404 status code if tries to delete a comment_id that does not exist', ()=>{ 
+    return request(app)
+    .delete('/api/comments/11111')
+    .expect(404)
+    .then(({body})=>{
+        expect(body.msg).toBe('comment_id does not exist')
+    })
+    })
+    it('DELETE: returns 404 status code if tries to delete a comment_id that does not exist', ()=>{ 
+        return request(app)
+        .delete('/api/comments/not-a-comment-id')
+        .expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe('bad request')
+        })
+})
+  
 describe('PATCH /api/articles/article_id', () =>{
     it('will return a 200 status code and an updated article with the vote count incremented', ()=>{
     const votePatch = { inc_votes: 20 }
@@ -335,5 +362,6 @@ return request(app)
     expect(body.msg).toBe('bad request')
 })
 })
+
 
 })
