@@ -258,3 +258,31 @@ return request(app)
 })
 })
 })
+
+
+describe('DELETE/api/comments/:comments_id', () => {
+    it('returns a 204 status code and no content', () => {
+        return request(app)
+       .delete('/api/comments/4')
+       .expect(204)
+       .then(({body}) =>{
+        expect(body).toEqual({})
+       })
+    })
+    it('DELETE: returns 404 status code if tries to delete a comment_id that does not exist', ()=>{ 
+    return request(app)
+    .delete('/api/comments/11111')
+    .expect(404)
+    .then(({body})=>{
+        expect(body.msg).toBe('comment_id does not exist')
+    })
+    })
+    it('DELETE: returns 404 status code if tries to delete a comment_id that does not exist', ()=>{ 
+        return request(app)
+        .delete('/api/comments/not-a-comment-id')
+        .expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe('bad request')
+        })
+})
+})
