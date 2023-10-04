@@ -1,5 +1,5 @@
 
-const { fetchAllTopics, fetchAllEndpoints, fetchArticleById, fetchAllArticles, fetchArticleCommentsById } = require('../Models/get-models.js')
+const { fetchAllTopics, fetchAllEndpoints, fetchArticleById, fetchAllArticles, fetchArticleCommentsById, fetchAllUsers } = require('../Models/get-models.js')
 
 
 
@@ -44,6 +44,14 @@ exports.getArticleCommentsById = (req, res, next) => {
     const {article_id} = req.params
     fetchArticleCommentsById(article_id).then((comments) => {
         res.status(200).send({comments: comments})
+    }).catch((err) => {
+        next(err)
+     })
+}
+
+exports.getAllUsers = (req, res, next) => {
+    fetchAllUsers().then((users)=>{
+        res.status(200).send({allUsers : users})
     }).catch((err) => {
         next(err)
      })
