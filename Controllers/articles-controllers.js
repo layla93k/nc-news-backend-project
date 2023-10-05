@@ -1,15 +1,6 @@
 
-const { fetchAllTopics, fetchAllEndpoints, fetchArticleById, fetchAllArticles, fetchArticleCommentsById, fetchAllUsers } = require('../Models/get-models.js')
+const {fetchAllEndpoints, fetchArticleById, fetchAllArticles, fetchArticleCommentsById, editVotes} = require('../Models/article-models.js')
 
-
-
-exports.getAllTopics = (req, res, next) => {
-    fetchAllTopics().then((topics) => {
-        res.status(200).send({ topics: topics })
-    }).catch((err) => {
-        next(err)
-    })
-}
 
 
 exports.getAllEndpoints = (req, res, next) => {
@@ -32,7 +23,8 @@ exports.getArticleById = (req, res, next) => {
 
 
 exports.getAllArticles = (req, res, next) => {
-    fetchAllArticles().then((articles)=>{
+    const {topic} = req.query
+    fetchAllArticles(topic).then((articles)=>{
         res.status(200).send({articles: articles})
     }).catch((err) => {
        next(err)
@@ -49,10 +41,14 @@ exports.getArticleCommentsById = (req, res, next) => {
      })
 }
 
-exports.getAllUsers = (req, res, next) => {
-    fetchAllUsers().then((users)=>{
-        res.status(200).send({allUsers : users})
-    }).catch((err) => {
-        next(err)
-     })
-}
+exports.patchVotes = (req, res, next) => {
+    const {article_id} = req.params
+  const incVoteNum = req.body.inc_votes
+  editVotes(article_id, incVoteNum).then((editedArticle)=>{
+    console.log(editedArticle)
+      res.status(200).send({updatedArticle: editedArticle[0] })
+  })
+  .catch((err) => {
+      next(err)
+  })
+  }
