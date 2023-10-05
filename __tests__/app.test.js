@@ -431,4 +431,40 @@ describe('GET /api/articles?topic=topicname', ()=>{
         })
     })
 
+describe('GET: api/articles?sortby=:column_name', ()=> {
+    it('GET: sortby query should allow for the articles to be sorted by any column provided', ()=> {
+        return request(app)
+        .get('/api/articles?sortby=author')
+        .expect(200)
+        .then(({body})=>{
+            expect(body.articles).toBeSortedBy('author')
+        })
+    })
+    it('GET: should return 400 if user inputs column which does not exist into the sortby', ()=>{
+        return request(app)
+        .get('/api/articles?sortby=not-a-column')
+        .expect(400)
+        .then(({body})=> {
+                expect(body.msg).toBe('invalid sortby query')
+            })
+        })
+        it('should order the sortby appropriately by ascending or descending depending on what is specified', ()=> {
+            return request(app)
+        .get('/api/articles?sortby=author&orderby=asc')
+        .expect(200)
+        .then(({body})=>{
+            expect(body.articles).toBeSortedBy('author', {
+                descending: false,
+            })
+        })
+        })
+        it('should return 404 not found if entering an incorrect orderby', ()=> {
+            return request(app)
+        .get('/api/articles?sortby=author&orderby=not-an-order')
+        .expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe('not found')
+            })
+        })
+        })
 

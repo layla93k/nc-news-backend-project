@@ -2,9 +2,9 @@ const express = require("express");
 const data = require('./db/data/test-data/index.js')
 
 const {getAllUsers} = require ('./Controllers/users-controllers.js')
-const { getAllEndpoints, getArticleById, getAllArticles, getArticleCommentsById} = require('./Controllers/articles-controllers.js')
+const { getAllEndpoints, getArticleById, getAllArticles} = require('./Controllers/articles-controllers.js')
 const { getAllTopics} = require('./Controllers/topics-controllers.js')
-const {deleteComment, postNewComment, patchVotes} = require ('./Controllers/comments-controllers.js')
+const {deleteComment, postNewComment, patchVotes, getArticleCommentsById} = require ('./Controllers/comments-controllers.js')
 
 
 const { handleCustomErrors, handleSQLErrors } = require('./Error handling/error-handling.js');
