@@ -468,3 +468,29 @@ describe('GET: api/articles?sortby=:column_name', ()=> {
         })
         })
 
+describe.only('GET: /api/users/:username', ()=>{
+    it('should return 200 and a user object corresponding to correct username', ()=>{
+    return request(app)
+    .get('/api/users/butter_bridge')
+    .expect(200)
+    .then(({body})=>{
+        expect(body.user).toMatchObject({
+            username: 'butter_bridge',
+            name: 'jonny',
+            avatar_url:
+              'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
+          })
+        })
+
+    })
+    test('GET:404 sends an appropriate status and error message when given a valid but non-existent username', () => {
+        return request(app)
+            .get('/api/users/valid_username')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('username does not exist');
+            });
+    })
+  
+    })
+
