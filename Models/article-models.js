@@ -1,6 +1,7 @@
 const db = require('../db/connection.js')
 const { readFile } = require("fs/promises")
 const { fetchAllTopics } = require('../Models/topics-models.js')
+const {fetchArticleCommentsById} = require('../Models/comment-models.js')
 
 
 
@@ -12,18 +13,25 @@ exports.fetchAllEndpoints = () => {
 }
 
 exports.fetchArticleById = (article_id) => {
-  return db.query(`SELECT * FROM articles WHERE articles.article_id = $1;`, [
+
+   
+  return db.query(`SELECT articles.*, COUNT(comments.comment_id) AS comment_count
+   FROM articles 
+   LEFT JOIN comments on articles.article_id = comments.article_id
+   WHERE articles.article_id = $1
+   GROUP BY articles.article_id;`, [
     article_id
   ])
     .then(({ rows }) => {
+console.log(rows)
       if (rows.length === 0) {
         return Promise.reject({ status: 404, msg: 'article_id does not exist' })
       }
 
       return rows
     })
+  }
 
-}
 
 
 exports.fetchAllArticles = (topicQuery) => {
@@ -55,30 +63,6 @@ exports.fetchAllArticles = (topicQuery) => {
   })
 }
 
-
-
-exports.fetchArticleCommentsById = (article_id) => {
-  const query = `SELECT comments.comment_id, 
-    comments.votes, comments.created_at, comments.author, comments.body, comments.article_id
-    FROM comments
-    WHERE comments.article_id = $1
-    ORDER BY comments.created_at DESC;`
-
-  const maxArticleQuery = `SELECT MAX(article_id) FROM articles;`
-
-  return Promise.all([
-    db.query(query, [article_id]),
-    db.query(maxArticleQuery)
-  ]).then(([commentsResult, maxArticleNum]) => {
-
-    const maxArticleId = maxArticleNum.rows[0].max
-
-    if (article_id <= maxArticleId) {
-      return commentsResult.rows
-    }
-    return Promise.reject({ status: 404, msg: 'article_id does not exist' })
-  })
-}
 
 
 
