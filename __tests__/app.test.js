@@ -57,31 +57,32 @@ describe('GET /api/articles/:article_id', () => {
             .expect(200)
             .then(({ body }) => {
                 expect(typeof body).toBe('object')
-                const desiredObj = 
-                    {   article_id: 3,
-                        title: "Eight pug gifs that remind me of mitch",
-                        topic: "mitch",
-                        author: "icellusedkars",
-                        body: "some gifs",
-                        created_at: '2020-11-03T09:12:00.000Z',
-                        votes: 0,
-                        article_img_url:
-                          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-                      }
-                      expect(body.article[0]).toMatchObject(desiredObj)
+                const desiredObj =
+                {
+                    article_id: 3,
+                    title: "Eight pug gifs that remind me of mitch",
+                    topic: "mitch",
+                    author: "icellusedkars",
+                    body: "some gifs",
+                    created_at: '2020-11-03T09:12:00.000Z',
+                    votes: 0,
+                    article_img_url:
+                        "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+                }
+                expect(body.article[0]).toMatchObject(desiredObj)
             })
 
     })
-    it('will return a 200 status code and an article object that includes comment count', ()=>{
+    it('will return a 200 status code and an article object that includes comment count', () => {
         return request(app)
-        .get(`/api/articles/3`)
-        .expect(200)
-        .then(({ body }) => {
-           expect(body.article[0]).toEqual (expect.objectContaining({
-            comment_count: '2'
-          }))
+            .get(`/api/articles/3`)
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.article[0]).toEqual(expect.objectContaining({
+                    comment_count: '2'
+                }))
+            })
     })
-})
     test('GET:404 sends an appropriate status and error message when given a valid but non-existent id', () => {
         return request(app)
             .get('/api/articles/1111')
@@ -399,88 +400,88 @@ describe('GET /api/users', () => {
     })
 })
 
-describe('GET /api/articles?topic=topicname', ()=>{
-    it('GET: should filter the articles and only return the articles that include the topic specified', ()=>{
+describe('GET /api/articles?topic=topicname', () => {
+    it('GET: should filter the articles and only return the articles that include the topic specified', () => {
         return request(app)
-        .get('/api/articles?topic=mitch')
-        .expect(200)
-        .then(({body})=> {
-            expect(body.articles.length).toBe(12)
-            body.articles.forEach((article)=>{
-                expect(article.topic).toBe('mitch')
+            .get('/api/articles?topic=mitch')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles.length).toBe(12)
+                body.articles.forEach((article) => {
+                    expect(article.topic).toBe('mitch')
+                })
             })
-        })
     })
-    it('GET: should return 200 and an empty array if given valid topic but there are no articles associated with this topic', ()=>{
+    it('GET: should return 200 and an empty array if given valid topic but there are no articles associated with this topic', () => {
         return request(app)
-        .get('/api/articles?topic=paper')
-        .expect(200)
-        .then(({body})=> {
-            expect(body.articles.length).toBe(0)
+            .get('/api/articles?topic=paper')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles.length).toBe(0)
                 expect(body.articles).toEqual([])
             })
-        })
-    
-    it('GET: should return 404 not found if user inputs topic which does not exist', ()=>{
+    })
+
+    it('GET: should return 404 not found if user inputs topic which does not exist', () => {
         return request(app)
-        .get('/api/articles?topic=not-a-topic')
-        .expect(404)
-        .then(({body})=> {
+            .get('/api/articles?topic=not-a-topic')
+            .expect(404)
+            .then(({ body }) => {
                 expect(body.msg).toBe('invalid topic')
             })
-        })
     })
+})
 
-describe('GET: api/articles?sortby=:column_name', ()=> {
-    it('GET: sortby query should allow for the articles to be sorted by any column provided', ()=> {
+describe('GET: api/articles?sortby=:column_name', () => {
+    it('GET: sortby query should allow for the articles to be sorted by any column provided', () => {
         return request(app)
-        .get('/api/articles?sortby=author')
-        .expect(200)
-        .then(({body})=>{
-            expect(body.articles).toBeSortedBy('author')
-        })
+            .get('/api/articles?sortby=author')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSortedBy('author')
+            })
     })
-    it('GET: should return 400 if user inputs column which does not exist into the sortby', ()=>{
+    it('GET: should return 400 if user inputs column which does not exist into the sortby', () => {
         return request(app)
-        .get('/api/articles?sortby=not-a-column')
-        .expect(400)
-        .then(({body})=> {
+            .get('/api/articles?sortby=not-a-column')
+            .expect(400)
+            .then(({ body }) => {
                 expect(body.msg).toBe('invalid sortby query')
             })
-        })
-        it('should order the sortby appropriately by ascending or descending depending on what is specified', ()=> {
-            return request(app)
-        .get('/api/articles?sortby=author&orderby=asc')
-        .expect(200)
-        .then(({body})=>{
-            expect(body.articles).toBeSortedBy('author', {
-                descending: false,
+    })
+    it('should order the sortby appropriately by ascending or descending depending on what is specified', () => {
+        return request(app)
+            .get('/api/articles?sortby=author&orderby=asc')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.articles).toBeSortedBy('author', {
+                    descending: false,
+                })
             })
-        })
-        })
-        it('should return 404 not found if entering an incorrect orderby', ()=> {
-            return request(app)
-        .get('/api/articles?sortby=author&orderby=not-an-order')
-        .expect(404)
-        .then(({body})=>{
-            expect(body.msg).toBe('not found')
+    })
+    it('should return 404 not found if entering an incorrect orderby', () => {
+        return request(app)
+            .get('/api/articles?sortby=author&orderby=not-an-order')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('not found')
             })
-        })
-        })
+    })
+})
 
-describe('GET: /api/users/:username', ()=>{
-    it('should return 200 and a user object corresponding to correct username', ()=>{
-    return request(app)
-    .get('/api/users/butter_bridge')
-    .expect(200)
-    .then(({body})=>{
-        expect(body.user).toMatchObject({
-            username: 'butter_bridge',
-            name: 'jonny',
-            avatar_url:
-              'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
-          })
-        })
+describe('GET: /api/users/:username', () => {
+    it('should return 200 and a user object corresponding to correct username', () => {
+        return request(app)
+            .get('/api/users/butter_bridge')
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.user).toMatchObject({
+                    username: 'butter_bridge',
+                    name: 'jonny',
+                    avatar_url:
+                        'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
+                })
+            })
 
     })
     test('GET:404 sends an appropriate status and error message when given a valid but non-existent username', () => {
@@ -491,11 +492,11 @@ describe('GET: /api/users/:username', ()=>{
                 expect(body.msg).toBe('username does not exist');
             });
     })
-  
-    })
 
-    describe('PATCH:/api/comments/:comment_id', ()=>{
-        it('should return a 200 and will return an object of the comment with votes count updated depending on comment_id', ()=>{ 
+})
+
+describe('PATCH:/api/comments/:comment_id', () => {
+    it('should return a 200 and will return an object of the comment with votes count updated depending on comment_id', () => {
         const commentVotesPatch = { inc_votes: 12 }
         return request(app)
             .patch('/api/comments/3')
@@ -509,11 +510,11 @@ describe('GET: /api/users/:username', ()=>{
                     author: "icellusedkars",
                     article_id: 1,
                     created_at: '2020-03-01T01:13:00.000Z',
-                  }
-                  expect(body.comment).toMatchObject(desiredObj)
-                })
+                }
+                expect(body.comment).toMatchObject(desiredObj)
+            })
     })
-    it('should decrement the vote if the number given is a negative number', ()=>{
+    it('should decrement the vote if the number given is a negative number', () => {
         const commentVotesPatch = { inc_votes: -10 }
         return request(app)
             .patch('/api/comments/3')
@@ -527,9 +528,9 @@ describe('GET: /api/users/:username', ()=>{
                     author: "icellusedkars",
                     article_id: 1,
                     created_at: '2020-03-01T01:13:00.000Z',
-                  }
-                  expect(body.comment).toMatchObject(desiredObj)
-                }) 
+                }
+                expect(body.comment).toMatchObject(desiredObj)
+            })
     })
     it('PATCH: returns 404 status code if tries to edit the votes on a comment with a valid comment_id that does not exist', () => {
         const commentVotesPatch = { inc_votes: 20 }
@@ -572,4 +573,61 @@ describe('GET: /api/users/:username', ()=>{
             })
     })
 
+})
+describe('POST /api/articles', () => {
+    it('should return a 201 created and the new article that has been posted with the relevant properties', () => {
+        const newArticle = {
+                author: 'butter_bridge',
+                title: 'The title of my article',
+                body: 'This is the body of my article.',
+                topic: 'cats',
+                article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg'
+            }
+        return request(app)
+            .post('/api/articles')
+            .send(newArticle)
+            .expect(201)
+            .then(({ body }) => {
+                expect(body.yourNewArticle).toHaveProperty('created_at')
+                expect(body.yourNewArticle).toMatchObject({ 
+                article_id: 14,
+                author: 'butter_bridge',
+                title: 'The title of my article',
+                body: 'This is the body of my article.',
+                topic: 'cats',
+                article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg',
+                votes: 0,
+                comment_count: 0})
+            })
     })
+    it('POST: returns 400 status code if there is a malformed body, i.e it is missing required fields', () => {
+        const newArticle = {
+            body: 'This is the body of my article.',
+            topic: 'cats',
+            article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg'
+        }
+        return request(app)
+            .post('/api/articles')
+            .send(newArticle)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('you have not included all relevant properties in your request')
+            })
+    })
+    it('POST: returns 400 status code if there are invalid properties in the body', () => {
+        const newArticle = {
+            rating: 10,
+            nickname: 'butter',
+            body: 'This is the body of my article.',
+            topic: 'cats',
+            article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg'
+        }
+        return request(app)
+            .post('/api/articles')
+            .send(newArticle)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('you have invalid properties in your request')
+            })
+    })
+})

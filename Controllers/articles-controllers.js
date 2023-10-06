@@ -1,5 +1,5 @@
 
-const {fetchAllEndpoints, fetchArticleById, fetchAllArticles, fetchArticleCommentsById, editVotes} = require('../Models/article-models.js')
+const {fetchAllEndpoints, fetchArticleById, fetchAllArticles, fetchArticleCommentsById, editVotes, insertNewArticle} = require('../Models/article-models.js')
 
 
 
@@ -53,4 +53,14 @@ exports.patchVotes = (req, res, next) => {
   .catch((err) => {
       next(err)
   })
+  }
+
+  exports.postNewArticle = (req, res, next)=>{
+    const newArticle = req.body
+   
+    insertNewArticle(newArticle).then((newArticle)=>{
+        res.status(201).send({yourNewArticle: newArticle[0]})
+    }).catch((err) => {
+        next(err)
+    })
   }

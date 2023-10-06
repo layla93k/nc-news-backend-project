@@ -97,5 +97,32 @@ exports.fetchAllArticles = (topicQuery, sortby, orderby = 'DESC') => {
 }
 
 
+function addCommentCountColumn() {
+  return db.query(`ALTER TABLE articles
+  ADD comment_count INT;`).then(({rows})=>{
+    return rows
+  })
+}
 
+exports.insertNewArticle = (newArticle) => {
+  const articleKeys = ['author', 'title', 'body', 'topic', 'article_img_url']
+  const newArticleKeys = Object.keys(newArticle)
+  const invalidKeys = newArticleKeys.filter((key)=> !articleKeys.includes(key))
+  
+  if(invalidKeys.length > 0){
+     return Promise.reject({status:400, msg: 'you have invalid properties in your request'})
+  }
+  
+return addCommentCountColumn().then(()=>{ 
+const valuesArr = Object.values(newArticle)
+
+  return db.query(`INSERT INTO articles 
+  (author, title, body, topic, article_img_url, created_at, votes, comment_count)
+  VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, 0, 0)
+  RETURNING*;`, valuesArr).then(({rows})=>{
+     return rows
+    })
+  })
+    
+}
 
