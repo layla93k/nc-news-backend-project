@@ -82,7 +82,7 @@ exports.fetchAllArticles = (topicQuery, sortby, orderby = 'DESC') => {
     const descRegex = /^(desc)$/i
     const ascRegex = /^(asc)$/i
     if(ascRegex.test(orderby) === false && descRegex.test(orderby)=== false) {
-      console.log('here')
+     
   
       return Promise.reject({ status: 404, msg: 'not found' })
   

@@ -1,6 +1,8 @@
 const db = require('../db/connection.js')
 const {fetchArticleById} = require('./article-models.js')
 
+
+
 exports.insertNewComment = (newComment, articleId, author) => {
    
     return fetchArticleById(articleId).then((article) => {
@@ -67,4 +69,16 @@ exports.removeComment = (commentId) => {
           }
           
           
+          exports.editCommentVote = (commentId, numVotes) => {
+          
+            return db.query(`UPDATE comments SET votes = votes + $1
+            WHERE comment_id = $2 RETURNING*;`, [numVotes, commentId]).then(({rows})=>{
+              if(rows.length === 0) {
+                return Promise.reject({status: 404, msg: 'comment_id does not exist'})
+              }
+              
+              return rows
+            })
+
+          }
           

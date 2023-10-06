@@ -468,7 +468,7 @@ describe('GET: api/articles?sortby=:column_name', ()=> {
         })
         })
 
-describe.only('GET: /api/users/:username', ()=>{
+describe('GET: /api/users/:username', ()=>{
     it('should return 200 and a user object corresponding to correct username', ()=>{
     return request(app)
     .get('/api/users/butter_bridge')
@@ -494,3 +494,82 @@ describe.only('GET: /api/users/:username', ()=>{
   
     })
 
+    describe('PATCH:/api/comments/:comment_id', ()=>{
+        it('should return a 200 and will return an object of the comment with votes count updated depending on comment_id', ()=>{ 
+        const commentVotesPatch = { inc_votes: 12 }
+        return request(app)
+            .patch('/api/comments/3')
+            .send(commentVotesPatch)
+            .expect(200)
+            .then(({ body }) => {
+                const desiredObj = {
+                    comment_id: 3,
+                    body: "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                    votes: 112,
+                    author: "icellusedkars",
+                    article_id: 1,
+                    created_at: '2020-03-01T01:13:00.000Z',
+                  }
+                  expect(body.comment).toMatchObject(desiredObj)
+                })
+    })
+    it('should decrement the vote if the number given is a negative number', ()=>{
+        const commentVotesPatch = { inc_votes: -10 }
+        return request(app)
+            .patch('/api/comments/3')
+            .send(commentVotesPatch)
+            .expect(200)
+            .then(({ body }) => {
+                const desiredObj = {
+                    comment_id: 3,
+                    body: "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                    votes: 90,
+                    author: "icellusedkars",
+                    article_id: 1,
+                    created_at: '2020-03-01T01:13:00.000Z',
+                  }
+                  expect(body.comment).toMatchObject(desiredObj)
+                }) 
+    })
+    it('PATCH: returns 404 status code if tries to edit the votes on a comment with a valid comment_id that does not exist', () => {
+        const commentVotesPatch = { inc_votes: 20 }
+        return request(app)
+            .patch('/api/comments/1111')
+            .send(commentVotesPatch)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('comment_id does not exist')
+            })
+    })
+    it('PATCH: returns 400 status code if tries to edit the votes on a comment with an invalid comment id', () => {
+        const commentVotesPatch = { inc_votes: 20 }
+        return request(app)
+            .patch('/api/comments/not-an-id')
+            .send(commentVotesPatch)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('bad request')
+            })
+    })
+    it('PATCH: will return a 400 status code if missing required fields in the body', () => {
+        const commentVotesPatch = {}
+        return request(app)
+            .patch('/api/comments/4')
+            .send(commentVotesPatch)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('bad request')
+            })
+    })
+    it('PATCH: will return a 400 status code if the body inc_votes is not a number', () => {
+        const commentVotesPatch = { inc_votes: 'not-a-num' }
+        return request(app)
+            .patch('/api/comments/4')
+            .send(commentVotesPatch)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('bad request')
+            })
+    })
+
+    })
