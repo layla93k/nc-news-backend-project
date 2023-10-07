@@ -631,7 +631,7 @@ describe('POST /api/articles', () => {
                 expect(body.msg).toBe('you have invalid properties in your request')
             })
     })
-    describe.only('GET /api/articles?p=pagenumber&limit=numofresponses', () => {
+    describe('GET /api/articles?p=pagenumber&limit=numofresponses', () => {
         it('should respond with the articles paginated according to the above inputs', () => {
             return request(app)
                 .get('/api/articles?p=2&limit=3')

@@ -32,7 +32,7 @@ exports.fetchArticleById = (article_id) => {
 
 
 exports.fetchAllArticles = (topicQuery, sortby, orderby = 'DESC') => {
-  console.log('here')
+ 
    if(sortby === undefined && topicQuery === undefined) {
     let query = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
     FROM articles GROUP BY articles.article_id ORDER BY articles.created_at DESC;`
