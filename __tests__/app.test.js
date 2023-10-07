@@ -151,12 +151,13 @@ describe('GET /api/articles/:article_id/comments', () => {
                 expect(body.comments).toBeSortedBy('created_at', {
                     descending: true,
                 })
+
                 const desiredObj = {
                     "comments": [
                         {
                             comment_id: 11,
                             votes: 0,
-                            created_at: '2020-09-19T23:10:00.000Z',
+                            created_at: '2020-09-20T00:10:00.000Z',
                             author: 'icellusedkars',
                             body: 'Ambidextrous marsupial',
                             article_id: 3
@@ -164,7 +165,7 @@ describe('GET /api/articles/:article_id/comments', () => {
                         {
                             comment_id: 10,
                             votes: 0,
-                            created_at: '2020-06-20T07:24:00.000Z',
+                            created_at: '2020-06-20T08:24:00.000Z',
                             author: 'icellusedkars',
                             body: 'git push origin master',
                             article_id: 3
@@ -327,7 +328,7 @@ describe('PATCH /api/articles/article_id', () => {
                     topic: "mitch",
                     author: "rogersop",
                     body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
-                    created_at: "2020-05-06T01:14:00.000Z",
+                    created_at: "2020-05-06T02:14:00.000Z",
                     votes: 20,
                     article_img_url:
                         "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
@@ -645,38 +646,38 @@ describe('POST /api/articles', () => {
                                 title: 'Moustache',
                                 article_id: 12,
                                 topic: 'mitch',
-                                created_at: '2020-10-11T11:24:00.000Z',
+                                created_at: '2020-10-11T12:24:00.000Z',
                                 votes: 0,
                                 article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
                                 comment_count: '1'
                             },
-                          { 
-                            author: 'butter_bridge',
-                            title: 'Another article about Mitch',
-                            article_id: 13,
-                            topic: 'mitch',
-                            created_at: '2020-10-11T11:24:00.000Z',
-                            votes: 0,
-                            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-                            comment_count: '1'
-                        },
-                        {
-                            author: 'rogersop',
-                            title: 'UNCOVERED: catspiracy to bring down democracy',
-                            article_id: 5,
-                            topic: 'cats',
-                            created_at: '2020-08-03T13:14:00.000Z',
-                            votes: 0,
-                            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-                            comment_count: '1'
-                        }],
-                        page: 2,
-                        per_page : 3,
-                        total_count : 13
-                      })
+                            {
+                                author: 'butter_bridge',
+                                title: 'Another article about Mitch',
+                                article_id: 13,
+                                topic: 'mitch',
+                                created_at: '2020-10-11T12:24:00.000Z',
+                                votes: 0,
+                                article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                                comment_count: '1'
+                            },
+                            {
+                                author: 'rogersop',
+                                title: 'UNCOVERED: catspiracy to bring down democracy',
+                                article_id: 5,
+                                topic: 'cats',
+                                created_at: '2020-08-03T14:14:00.000Z',
+                                votes: 0,
+                                article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                                comment_count: '1'
+                            }],
+                            page: 2,
+                            per_page: 3,
+                            total_count: 13
+                        })
 
+                })
         })
     })
-})
 
 })

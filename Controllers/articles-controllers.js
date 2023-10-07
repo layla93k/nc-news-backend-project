@@ -41,7 +41,6 @@ exports.getAllArticles = (req, res, next) => {
    
     fetchAllArticles().then((articles)=>{
         const paginatedArticles = paginateData(articles, pageNum, responseLimit)
-       console.log(paginatedArticles)
         res.status(200).json(paginatedArticles)
     })
   }
