@@ -1,5 +1,7 @@
 
 const {fetchAllEndpoints, fetchArticleById, fetchAllArticles, fetchArticleCommentsById, editVotes, insertNewArticle} = require('../Models/article-models.js')
+const { response } = require('../app.js')
+const { paginateData } = require('../db/seeds/utils.js')
 
 
 
@@ -23,7 +25,8 @@ exports.getArticleById = (req, res, next) => {
 
 
 exports.getAllArticles = (req, res, next) => {
-    const {sortby} = req.query
+      if(req.query.p  === undefined && req.query.limit  === undefined) {
+       const {sortby} = req.query
     const {topic} = req.query
     const {orderby} = req.query
     fetchAllArticles(topic, sortby, orderby).then((articles)=>{
@@ -31,8 +34,19 @@ exports.getAllArticles = (req, res, next) => {
     }).catch((err) => {
        next(err)
     })
-
+  } else {
+    
+    const pageNum = parseInt(req.query.p) || 1
+    const responseLimit = parseInt(req.query.limit) || 10 
+   
+    fetchAllArticles().then((articles)=>{
+        const paginatedArticles = paginateData(articles, pageNum, responseLimit)
+       console.log(paginatedArticles)
+        res.status(200).json(paginatedArticles)
+    })
+  }
 }
+
 
 exports.getArticleCommentsById = (req, res, next) => {
     const {article_id} = req.params

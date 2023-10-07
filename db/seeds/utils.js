@@ -20,3 +20,15 @@ exports.formatComments = (comments, idLookup) => {
     };
   });
 };
+
+exports.paginateData = (data, page, numPerPage) =>{
+  const startIndex = (page-1) * numPerPage
+  const endIndex = startIndex + numPerPage
+  const dataOnPage =  data.slice(startIndex, endIndex)
+  return {
+    data: dataOnPage,
+    page: page,
+    per_page: numPerPage,
+    total_count: data.length
+  }
+}

@@ -577,27 +577,28 @@ describe('PATCH:/api/comments/:comment_id', () => {
 describe('POST /api/articles', () => {
     it('should return a 201 created and the new article that has been posted with the relevant properties', () => {
         const newArticle = {
-                author: 'butter_bridge',
-                title: 'The title of my article',
-                body: 'This is the body of my article.',
-                topic: 'cats',
-                article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg'
-            }
+            author: 'butter_bridge',
+            title: 'The title of my article',
+            body: 'This is the body of my article.',
+            topic: 'cats',
+            article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg'
+        }
         return request(app)
             .post('/api/articles')
             .send(newArticle)
             .expect(201)
             .then(({ body }) => {
                 expect(body.yourNewArticle).toHaveProperty('created_at')
-                expect(body.yourNewArticle).toMatchObject({ 
-                article_id: 14,
-                author: 'butter_bridge',
-                title: 'The title of my article',
-                body: 'This is the body of my article.',
-                topic: 'cats',
-                article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg',
-                votes: 0,
-                comment_count: 0})
+                expect(body.yourNewArticle).toMatchObject({
+                    article_id: 14,
+                    author: 'butter_bridge',
+                    title: 'The title of my article',
+                    body: 'This is the body of my article.',
+                    topic: 'cats',
+                    article_img_url: 'http://friendssjrosegarden.org/wp-content/uploads/2012/11/myles_merc2.jpg',
+                    votes: 0,
+                    comment_count: 0
+                })
             })
     })
     it('POST: returns 400 status code if there is a malformed body, i.e it is missing required fields', () => {
@@ -630,4 +631,52 @@ describe('POST /api/articles', () => {
                 expect(body.msg).toBe('you have invalid properties in your request')
             })
     })
+    describe.only('GET /api/articles?p=pagenumber&limit=numofresponses', () => {
+        it('should respond with the articles paginated according to the above inputs', () => {
+            return request(app)
+                .get('/api/articles?p=2&limit=3')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body).toMatchObject(
+
+                        {
+                            data: [{
+                                author: 'butter_bridge',
+                                title: 'Moustache',
+                                article_id: 12,
+                                topic: 'mitch',
+                                created_at: '2020-10-11T11:24:00.000Z',
+                                votes: 0,
+                                article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                                comment_count: '1'
+                            },
+                          { 
+                            author: 'butter_bridge',
+                            title: 'Another article about Mitch',
+                            article_id: 13,
+                            topic: 'mitch',
+                            created_at: '2020-10-11T11:24:00.000Z',
+                            votes: 0,
+                            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                            comment_count: '1'
+                        },
+                        {
+                            author: 'rogersop',
+                            title: 'UNCOVERED: catspiracy to bring down democracy',
+                            article_id: 5,
+                            topic: 'cats',
+                            created_at: '2020-08-03T13:14:00.000Z',
+                            votes: 0,
+                            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                            comment_count: '1'
+                        }],
+                        page: 2,
+                        per_page : 3,
+                        total_count : 13
+                      })
+
+        })
+    })
+})
+
 })
