@@ -4,7 +4,7 @@ Welcome to my Northcoders News API! This project provides you with an API built 
 
 #Hosted Version
 
-You can access the hosted version of the API .
+You can access the hosted version of the API here https://nc-news-back-end-project.onrender.com/api
 
 #Getting Started 📋
 
