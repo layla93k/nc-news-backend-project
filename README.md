@@ -1,37 +1,33 @@
 # Northcoders News API
 
-Hello and welcome to my API!
 
-Please find a link to the hosted version below:
-https://nc-news-back-end-project.onrender.com/api
+Welcome to my Northcoders News API! This project provides you with a robust API built using Node.js, allowing interaction with a PostgreSQL (PSQL) database. It follows RESTful principles and adheres to the Model-View-Controller (MVC) pattern. The API offers Create, Read, Update, and Delete (CRUD) operations through various endpoints. During the development, Test Driven Development (TDD) was rigorously applied to ensure the code met expected outcomes. You can use this API to retrieve articles based on specific queries, post new comments on articles, and delete comments, all related to the nc_news database.
 
-In this project, I have built an API using Node.js that can interact with a PSQL database. Whilst building my API, I ensured that it had a RESTful structure and implemented the Model-View-Controller pattern. I used Create, Read, Update and Delete (CRUD) methods to build my endpoints.
-Throughout the project I implemented Test Driven Development (TDD) to ensure that the code I was writing met the outcome I was expecting. In this app, some of things you can do include; retrieving articles depending on specific queries, posting new comments on articles and deleting comments - all relating to the nc_news database.
+Hosted Version
+You can access the hosted version of the API here.
 
-If you wish to clone this project and run it locally please add your own:
+Getting Started 📋
+These instructions will help you set up and run the project on your local machine for development purposes.
 
-.env.test file with PGDATABASE= nc_news_test and a
-.env.development file with PGDATABASE= nc_news
+Prerequisites 🚪
+To get started, you need to have the following prerequisites:
 
-this will enable you to connect to the correct databases.
-
-You will also need to install the dotenv, express and pg dependencies to access these libraries and they will be needed to run the API properly. You can do this by running:
-
-npm install dotenv --save 
-
+Node.js 0.10.x or later
+PostgreSQL 14.9 or later
+Installation 🔧
+Clone the repository to your local machine.
+Create a .env.test file with PGDATABASE=nc_news_test and a .env.development file with PGDATABASE=nc_news. These files are essential for connecting to the correct databases.
+Install the required dependencies by running the following commands:
+bash
+Copy code
+npm install dotenv --save
 npm install express
-
 npm install pg-format
-
-To enable you to interact with the database, you will need to seed the local database by running:
+To seed the local database, run:
+bash
+Copy code
 npm run seed
 
-If you would like to run the tests to see my Test Driven Development in action run:
-npm run test app
-
-To run, this project requires:
-Node.js 0.10.x or later 
-PostgreSQL 14.9 or later
 
 
 
