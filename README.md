@@ -2,7 +2,7 @@
 
 Welcome to my Northcoders News API! This project provides you with an API built using Node.js, allowing interaction with a PostgreSQL (PSQL) database. It follows RESTful principles and adheres to the Model-View-Controller (MVC) pattern. The API offers Create, Read, Update, and Delete (CRUD) operations through various endpoints. During the development, Test Driven Development (TDD) was used to ensure the code met expected outcomes. You can use this API to retrieve articles based on specific queries, post new comments on articles, and delete comments, all related to the nc_news database.
 
-#Hosted Version
+<fontsize="5">#Hosted Version</font>
 You can access the hosted version of the API here.
 
 #Getting Started 📋
