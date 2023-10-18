@@ -27,8 +27,6 @@ exports.paginateData = (data, page, numPerPage) =>{
   const dataOnPage =  data.slice(startIndex, endIndex)
   return {
     data: dataOnPage,
-    page: page,
-    per_page: numPerPage,
     total_count: data.length
   }
 }
