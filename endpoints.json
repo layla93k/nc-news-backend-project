@@ -31,12 +31,7 @@
   },
   "GET /api/articles": {
     "description": "serves an array of all articles",
-    "queries": [
-      "author",
-      "topic",
-      "sort_by",
-      "order"
-    ],
+    "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
         {
@@ -156,9 +151,7 @@
   },
   "GET /api/articles?topic=topicname": {
     "description": "will serve an array of articles that have the topic that is included in the query",
-    "queries": [
-      "topic"
-    ],
+    "queries": ["topic"],
     "exampleResponse": [
       {
         "title": "Living in the shadow of a great man",
@@ -180,40 +173,9 @@
       }
     ]
   },
-  "GET api/articles?sortby=:column_name": {
-    "description": "serves an array of all articles and orders them by the column name inputted by the client",
-    "queries": [
-      "sortby"
-    ],
-    "exampleResponse": [
-      {
-        "author": "butter_bridge",
-        "title": "Moustache",
-        "article_id": 12,
-        "topic": "mitch",
-        "created_at": "2020-10-11T11:24:00.000Z",
-        "votes": 0,
-        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-        "comment_count": 1
-      },
-      {
-        "author": "icellusedkars",
-        "title": "Z",
-        "article_id": 7,
-        "topic": "mitch",
-        "created_at": "2020-01-07T14:08:00.000Z",
-        " votes": 0,
-        " article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-        "comment_count": 1
-      }
-    ]
-  },
   "GET api/articles?sortby=:column_name&orderby=asc": {
     "description": "serves an array of all articles and orders them by the column name inputted by the client and in descending or ascending order dependent on the orderby query",
-    "queries": [
-      "sortby",
-      "orderby"
-    ],
+    "queries": ["sortby", "orderby"],
     "exampleResponse": [
       {
         "author": "butter_bridge",
@@ -271,6 +233,32 @@
       "votes": 0,
       "created_at": "2020-03-01T01:13:00.000Z",
       "comment_count": 0
+    }
+  },
+  "GET /api/articles?p=1&limit=2": {
+    "description": "will serve an array of articles which have been paginated depending on the limit, the articles which are served will depend on the age number",
+    "queries": ["p", "limit"],
+    "exampleResponse": {
+      "data": [
+        {
+          "author": "butter_bridge",
+          "title": "Moustache",
+          "article_id": 12,
+          "topic": "mitch",
+          "votes": 0,
+          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+          "comment_count": "1"
+        },
+        {
+          "author": "butter_bridge",
+          "title": "Another article about Mitch",
+          "article_id": 13,
+          "topic": "mitch",
+          "votes": 0,
+          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+          "comment_count": "1"
+        }
+      ]
     }
   }
 }

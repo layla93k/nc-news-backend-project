@@ -410,7 +410,7 @@ describe("GET /api/articles?topic=topicname", () => {
   });
 });
 
-describe("GET: api/articles?sortby=:column_name&orderby=asc/desc", () => {
+describe("GET: api/articles?sortby=:column_name", () => {
   it("GET: sortby query should allow for the articles to be sorted by any column provided and defaults to descending orderby", () => {
     return request(app)
       .get("/api/articles?sortby=author&orderby=desc")
@@ -668,9 +668,38 @@ describe("POST /api/articles", () => {
           });
         });
     });
-    // test for when inputting a limit higher than number of articles, should show all articles and give 200 status eg. 200 limit
-    // 400 if invalid page num eg. invalid-page-num
-    //400 if invalid limit eg invalid-limit
-    //404 not found if page number is valid but does not exist 200 page
+    it("should show all articles and give a 200 status with a limit that is larger than the number of articles in the data", () => {
+      return request(app)
+        .get("/api/articles?p=1&limit=1000")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.data.length).toBe(13);
+          expect(typeof body.data[0]).toBe("object");
+        });
+    });
+    it("should respond with a 400 Bad Request for an invalid page number", () => {
+      return request(app)
+        .get("/api/articles?p=invalid-page-num&limit=10")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("bad request");
+        });
+    });
+    it("should respond with a 400 Bad Request for an invalid limit", () => {
+      return request(app)
+        .get("/api/articles?p=1&limit=invalid-limit")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("bad request");
+        });
+    });
+    it("should respond with a 404 Not Found for a valid but non-existent page", () => {
+      return request(app)
+        .get("/api/articles?p=100&limit=10")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Not Found");
+        });
+    });
   });
 });
