@@ -21,12 +21,12 @@ exports.formatComments = (comments, idLookup) => {
   });
 };
 
-exports.paginateData = (data, page, numPerPage) =>{
-  const startIndex = (page-1) * numPerPage
-  const endIndex = startIndex + numPerPage
-  const dataOnPage =  data.slice(startIndex, endIndex)
+exports.paginateData = (data, page, numPerPage) => {
+  const startIndex = (page - 1) * numPerPage;
+  const endIndex = startIndex + numPerPage;
+  const dataOnPage = data.slice(startIndex, endIndex);
   return {
     data: dataOnPage,
-    total_count: data.length
-  }
-}
+    total_count: data.length,
+  };
+};

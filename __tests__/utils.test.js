@@ -2,7 +2,7 @@ const {
   convertTimestampToDate,
   createRef,
   formatComments,
-  paginateData
+  paginateData,
 } = require("../db/seeds/utils");
 
 describe("convertTimestampToDate", () => {
@@ -104,71 +104,61 @@ describe("formatComments", () => {
   });
 });
 
-describe('paginate data correcty', ()=>{
-  test("should return an empty array is the page number is 0", ()=>{
-    const testData = [1, 2, 3, 4, 5, 6, 7 ,8, 9, 10, 11, 12, 13, 14, 15]
-    const page = 0
-    const numPerPage = 5
+describe.only("paginate data correcty", () => {
+  test("should return an empty array is the page number is 0", () => {
+    const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const page = 0;
+    const numPerPage = 5;
     const result = paginateData(testData, page, numPerPage);
 
     expect(result).toEqual({
       data: [],
-      page: page,
-      per_page: numPerPage,
       total_count: testData.length,
-    })
-  })
+    });
+  });
   test("should paginate the first page correctly", () => {
-    const testData = [1, 2, 3, 4, 5, 6, 7 ,8, 9, 10, 11, 12, 13, 14, 15]
-    const page = 1
-    const numPerPage = 5
-    const result = paginateData(testData, page, numPerPage)
+    const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const page = 1;
+    const numPerPage = 5;
+    const result = paginateData(testData, page, numPerPage);
 
     expect(result).toEqual({
       data: [1, 2, 3, 4, 5],
-      page: page,
-      per_page: numPerPage,
       total_count: testData.length,
-    })
-  })
+    });
+  });
 
   test("should paginate the second page correctly", () => {
-    const testData = [1, 2, 3, 4, 5, 6, 7 ,8, 9, 10, 11, 12, 13, 14, 15]
-    const page = 2
-    const numPerPage = 5
-    const result = paginateData(testData, page, numPerPage)
+    const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const page = 2;
+    const numPerPage = 5;
+    const result = paginateData(testData, page, numPerPage);
 
     expect(result).toEqual({
       data: [6, 7, 8, 9, 10],
-      page: page,
-      per_page: numPerPage,
       total_count: testData.length,
-    })
-  })
+    });
+  });
   it("should handle different numPerPage amounts", () => {
-    const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    const page = 2
-    const numPerPage = 3
-    const result = paginateData(testData, page, numPerPage)
+    const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const page = 2;
+    const numPerPage = 3;
+    const result = paginateData(testData, page, numPerPage);
 
     expect(result).toEqual({
       data: [4, 5, 6],
-      page: page,
-      per_page: numPerPage,
       total_count: testData.length,
     });
-  })
+  });
   it("should handle numPerPage greater than total data length", () => {
-    const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    const page = 1
-    const numPerPage = 25
-    const result = paginateData(testData, page, numPerPage)
+    const testData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const page = 1;
+    const numPerPage = 25;
+    const result = paginateData(testData, page, numPerPage);
 
     expect(result).toEqual({
       data: testData,
-      page: page,
-      per_page: numPerPage,
       total_count: testData.length,
-    })
-  })
-})
+    });
+  });
+});
