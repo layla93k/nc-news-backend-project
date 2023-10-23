@@ -13,13 +13,13 @@ const topicsRouter = require("./routes/topics-router.js");
 const usersRouter = require("./routes/users-router.js");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.use("/api", articleRouter);
 app.use("/api", commentsRouter);
 app.use("/api", topicsRouter);
 app.use("/api", usersRouter);
-app.use(cors());
 
 //error handling
 app.use(handleCustomErrors);
