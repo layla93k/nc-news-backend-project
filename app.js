@@ -1,5 +1,6 @@
 const express = require("express");
 const data = require("./db/data/test-data/index.js");
+const cors = require("cors");
 const {
   handleCustomErrors,
   handleSQLErrors,
@@ -18,13 +19,7 @@ app.use("/api", articleRouter);
 app.use("/api", commentsRouter);
 app.use("/api", topicsRouter);
 app.use("/api", usersRouter);
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
+app.use(cors());
 
 //error handling
 app.use(handleCustomErrors);
