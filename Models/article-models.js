@@ -71,6 +71,7 @@ exports.fetchAllArticles = (topicQuery, sortby, orderby) => {
       created_at: "created_at",
       votes: "votes",
       article_img_url: "img_url",
+      comment_count: "comment_count",
     };
 
     const validOrderBy = {
