@@ -63,39 +63,44 @@ exports.fetchAllArticles = (topicQuery, sortby, orderby) => {
       return Promise.reject({ status: 404, msg: "invalid topic" });
     });
   } else if (sortby) {
-    const validSortbyQueries = {
-      title: "title",
-      topic: "topic",
-      author: "author",
-      body: "body",
-      created_at: "created_at",
-      votes: "votes",
-      article_img_url: "img_url",
-      comment_count: "comment_count",
-    };
+    return addCommentCountColumn().then(() => {
+      const validSortbyQueries = {
+        title: "title",
+        topic: "topic",
+        author: "author",
+        body: "body",
+        created_at: "created_at",
+        votes: "votes",
+        article_img_url: "img_url",
+        comment_count: "comment_count",
+      };
 
-    const validOrderBy = {
-      asc: "asc",
-      desc: "desc",
-    };
+      const validOrderBy = {
+        asc: "asc",
+        desc: "desc",
+      };
 
-    if (!(sortby in validSortbyQueries)) {
-      return Promise.reject({ status: 400, msg: "invalid sortby query" });
-    }
-    const descRegex = /^(desc)$/i;
-    const ascRegex = /^(asc)$/i;
-    if (ascRegex.test(orderby) === false && descRegex.test(orderby) === false) {
-      return Promise.reject({ status: 404, msg: "not found" });
-    }
+      if (!(sortby in validSortbyQueries)) {
+        return Promise.reject({ status: 400, msg: "invalid sortby query" });
+      }
+      const descRegex = /^(desc)$/i;
+      const ascRegex = /^(asc)$/i;
+      if (
+        ascRegex.test(orderby) === false &&
+        descRegex.test(orderby) === false
+      ) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      }
 
-    return db
-      .query(
-        `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
+      return db
+        .query(
+          `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
     FROM articles GROUP BY articles.article_id ORDER BY articles.${validSortbyQueries[sortby]} ${validOrderBy[orderby]}`
-      )
-      .then(({ rows }) => {
-        return rows;
-      });
+        )
+        .then(({ rows }) => {
+          return rows;
+        });
+    });
   }
 };
 function addCommentCountColumn() {
