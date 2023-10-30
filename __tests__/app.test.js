@@ -641,7 +641,7 @@ describe("POST /api/articles", () => {
                 votes: 0,
                 article_img_url:
                   "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-                comment_count: "1",
+                comment_count: "0",
               },
               {
                 author: "butter_bridge",
@@ -651,7 +651,7 @@ describe("POST /api/articles", () => {
                 votes: 0,
                 article_img_url:
                   "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-                comment_count: "1",
+                comment_count: "0",
               },
               {
                 author: "rogersop",
@@ -661,7 +661,7 @@ describe("POST /api/articles", () => {
                 votes: 0,
                 article_img_url:
                   "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-                comment_count: "1",
+                comment_count: "2",
               },
             ],
             total_count: 13,

@@ -33,8 +33,11 @@ exports.fetchArticleById = (article_id) => {
 
 exports.fetchAllArticles = (topicQuery, sortby, orderby) => {
   if (sortby === undefined && topicQuery === undefined) {
-    let query = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
-    FROM articles GROUP BY articles.article_id ORDER BY articles.created_at DESC;`;
+    let query = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count
+    FROM articles
+    LEFT JOIN comments on articles.article_id = comments.article_id
+    GROUP BY articles.article_id
+    ORDER BY articles.created_at DESC;`;
     return db.query(query).then(({ rows }) => {
       return rows;
     });
@@ -43,8 +46,9 @@ exports.fetchAllArticles = (topicQuery, sortby, orderby) => {
       const validTopics = topics.map((topic) => topic.slug);
 
       if (validTopics.includes(topicQuery)) {
-        let query = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
-    FROM articles`;
+        let query = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count
+    FROM articles
+    LEFT JOIN comments on articles.article_id = comments.article_id`;
 
         let values = [];
 
@@ -90,8 +94,10 @@ exports.fetchAllArticles = (topicQuery, sortby, orderby) => {
 
     return db
       .query(
-        `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(articles.article_id) AS comment_count
-    FROM articles GROUP BY articles.article_id ORDER BY ${validSortbyQueries[sortby]} ${validOrderBy[orderby]}`
+        `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count
+    FROM articles
+    LEFT JOIN comments on articles.article_id = comments.article_id
+    GROUP BY articles.article_id ORDER BY ${validSortbyQueries[sortby]} ${validOrderBy[orderby]}`
       )
       .then(({ rows }) => {
         return rows;
